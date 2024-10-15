@@ -6,6 +6,7 @@ Author: Martin Rubione <mrubione@udesa.edu.ar>
 Maintainer: Martin Rubione <mrubione@udesa.edu.ar>
 Description: The paskal package assists performance auditors with useful statistical sampling calculations. It includes functions to calculate sample size, sampling error, and confidence intervals when estimating proportions, means, or totals through various sampling plans.
 License: GPL (>= 3)
+URL: https://mrubi1.github.io/paskal/
 Encoding: UTF-8
 RoxygenNote: 7.2.3
 Suggests: 

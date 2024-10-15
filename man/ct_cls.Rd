@@ -30,13 +30,15 @@ This function returns the confidence interval of the population total when using
 Confidence interval of the total under a cluster sampling design
 }
 \details{
-The function to calculate the limit of precision if M is unknown is:
-\deqn{LP = Z \cdot \sqrt{ N^2 \cdot \frac {\text{sd}^2}{n} \cdot \frac{(N - n)} {N} }}
-where 'sd' is parameter 'sd_est', and 'Z' is the quantile of the two-tailed normal distribution function, compatible with the chosen confidence level 'C'.
+The function to calculate the confidence interval if M is unknown is:
+\deqn{CI = \hat{t} \pm MOE}
+where:
+\deqn{MOE = Z \cdot \sqrt{ N^2 \cdot \frac {\text{sd}^2}{n} \cdot \frac{(N - n)} {N} }}
+\eqn{\hat{t}} is the sample total, 'sd' is parameter 'sd_est', and 'Z' is the quantile of the two-tailed normal distribution function, compatible with the chosen confidence level 'C'.
 If 'sd_est' is unknown, the t-student is used instead of the normal distribution.
 
 Alternatively, if M is known, the function is as follows:
-\deqn{LP = Z \cdot \sqrt{ M^2 \cdot \frac {\text{sd}^2}{n} \cdot \frac{(N - n)} {N \cdot m^2} }}
+\deqn{MOE = Z \cdot \sqrt{ M^2 \cdot \frac {\text{sd}^2}{n} \cdot \frac{(N - n)} {N \cdot m^2} }}
 }
 \examples{
 ct_cls(C = 0.95, x_est = 9990, n_real = 30, N = 500, m = 8, M = 2500, sd_est = 15000, TRUE)

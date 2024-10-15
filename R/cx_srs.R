@@ -11,9 +11,11 @@
 #' @export
 #'
 #' @details
-#' The function to calculate the limit of precision is:
-#' \deqn{LP = Z \cdot \sqrt{\frac{\text{sd}^2}{n} \cdot \frac{(N - n)} {N}}}
-#' where 'sd' is parameter 'sd_est', and 'Z' is the quantile of the two-tailed normal distribution function, compatible with the chosen confidence level 'C'.
+#' The function to calculate the confidence interval is:
+#' \deqn{CI = \hat{x} \pm MOE}
+#' where:
+#' \deqn{MOE = Z \cdot \sqrt{\frac{\text{sd}^2}{n} \cdot \frac{(N - n)} {N}}},
+#' \eqn{\hat{x}} is the sample mean, 'sd' is parameter 'sd_est', and 'Z' is the quantile of the two-tailed normal distribution function, compatible with the chosen confidence level 'C'.
 #' If 'sd_est' is unknown, the t-student is used instead of the normal distribution.
 #'
 #' @examples cx_srs(C = 0.95, sd_est = 200, x_est = 3500, n_real = 250)
@@ -48,17 +50,17 @@ cx_srs <- function(C, sd_est, x_est, n_real, parameter = FALSE, N = Inf) {
 
   sd_x_est <- sd_est / sqrt(n_real) * sqrt(fcf)
 
-  LP <- ifelse(parameter == TRUE,
+  MOE <- ifelse(parameter == TRUE,
                qnorm(C + (1 - C) / 2, 0, 1), # qnorm: quantile of the normal distribution
                qt(C + (1 - C) / 2, N) # qt: quantile of the t-student distribution
                ) * sd_x_est
 
-  p_upper <- round(x_est + LP, 3)
+  p_upper <- round(x_est + MOE, 3)
 
-  p_lower <- round(x_est - LP, 3)
+  p_lower <- round(x_est - MOE, 3)
 
   inference <- paste0("The population mean is between ", p_lower, " and ", p_upper, " with ", C * 100, "% confidence.")
 
-  return(list(x_est = x_est, margin_of_error = LP, inference = inference))
+  return(list(x_est = x_est, margin_of_error = MOE, inference = inference))
 
 }

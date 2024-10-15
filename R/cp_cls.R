@@ -13,9 +13,11 @@
 #' @export
 #'
 #' @details
-#' The function to calculate the limit of precision is:
-#' \deqn{LP = Z \cdot \sqrt{ \frac{p.(1 - p)}{(n - 1)} \cdot \frac{(N - n)}{N \cdot m^2} }}
-#' where 'sd' is parameter 'sd_est', and 'Z' is the quantile of the two-tailed normal distribution function, compatible with the chosen confidence level 'C'.
+#' The function to calculate the confidence interval is:
+#' \deqn{CI = \hat{p} \pm MOE}
+#' where:
+#' \deqn{MOE = Z \cdot \sqrt{ \frac{p.(1 - p)}{(n - 1)} \cdot \frac{(N - n)}{N \cdot m^2} }}
+#' \eqn{\hat{p}} is the sample proportion, 'sd' is parameter 'sd_est', and 'Z' is the quantile of the two-tailed normal distribution function, compatible with the chosen confidence level 'C'.
 #' If 'sd_est' is unknown, the t-student is used instead of the normal distribution.
 #'
 #'
@@ -58,14 +60,14 @@ cp_cls <- function(C, p_est, n_real, sd_est, m, N = Inf, parameter = FALSE) {
 
   sd_p_est <- sqrt(((N - n_real) / (N * n_real * m^2)) * sd_est^2)
 
-  LP <- ifelse(parameter == TRUE,
+  MOE <- ifelse(parameter == TRUE,
                qnorm(C + (1 - C) / 2, 0, 1), # qnorm: quantile of the normal distribution
                qt(C + (1 - C) / 2, N) # qt: quantile of the t-student distribution
   ) * sd_p_est
 
-  p_upper <- round(p_est + LP, 3)
+  p_upper <- round(p_est + MOE, 3)
 
-  p_lower <- round(p_est - LP, 3)
+  p_lower <- round(p_est - MOE, 3)
 
   inference <- paste0("The population mean is between ", p_lower, " and ", p_upper, " with ", C * 100, "% confidence.")
 
@@ -73,6 +75,6 @@ cp_cls <- function(C, p_est, n_real, sd_est, m, N = Inf, parameter = FALSE) {
     inference <- paste0(inference, " Note that n_real < 20 and the estimated variance may not be unbiased. Consider increasing the sample size.")
   }
 
-  return(list(p_est = p_est, margin_of_error = LP, inference = inference))
+  return(list(p_est = p_est, margin_of_error = MOE, inference = inference))
 
 }

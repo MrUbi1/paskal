@@ -9,9 +9,11 @@
 #' @export
 #'
 #' @details
-#' The function to calculate the limit of precision is:
-#' \deqn{LP = Z \cdot \sqrt{\frac{p \cdot (1 - p)}{(n - 1)} \cdot \frac{(N - n)} {N}}}
-#' where 'p' is parameter 'p_est', and 'Z' is the quantile of the two-tailed normal distribution function,
+#' The function to calculate the confidence interval is:
+#' \deqn{CI = \hat{p} \pm MOE}
+#' where:
+#' \deqn{MOE = Z \cdot \sqrt{\frac{p \cdot (1 - p)}{(n - 1)} \cdot \frac{(N - n)} {N}}}
+#' \eqn{\hat{p}} is the sample proportion and 'Z' is the quantile of the two-tailed normal distribution function,
 #' compatible with the chosen confidence level 'C'.
 #'
 #' @examples cp_srs(C = 0.95, n_real = 250, p_est = 0.4)
@@ -46,15 +48,15 @@ cp_srs <- function(C,n_real, p_est, N = Inf) {
 
   sd_p_est <- sqrt((p_est * (1 - p_est) / (n_real - 1)) * fcf)
 
-  LP <- qnorm(C + (1 - C) / 2, 0, 1) * sd_p_est # qnorm: quantile of the normal distribution
+  MOE <- qnorm(C + (1 - C) / 2, 0, 1) * sd_p_est # qnorm: quantile of the normal distribution
 
-  p_upper <- round(min(1, p_est + LP), 3)
+  p_upper <- round(min(1, p_est + MOE), 3)
 
-  p_lower <- round(max(0, p_est - LP), 3)
+  p_lower <- round(max(0, p_est - MOE), 3)
 
   inference <- paste0("The population proportion is between ", p_lower, " and ", p_upper, " with ", C * 100, "% confidence.")
 
-  return(list(p_est = p_est, margin_of_error = LP, inference = inference))
+  return(list(p_est = p_est, margin_of_error = MOE, inference = inference))
 
 }
 

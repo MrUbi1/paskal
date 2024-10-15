@@ -14,8 +14,7 @@ different sampling plans.
 
 ## Installation
 
-You can install the development version of paskal from
-[GitHub](https://github.com/) with:
+You can install paskal from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
@@ -51,3 +50,7 @@ print(paste("Sample size:",n,"measurements")) # Print the resulting sampling siz
 If you’re still unsure if the package is right for you, take a look at
 the “Intro to paskal” vignette. There you’ll find three use cases that
 demonstrate the full scope of this library.
+
+Much of the formulas that make up the functions of the package are based
+on those included in Scheaffer, R. et al. 2007. Elementos de muestreo.
+6ª edición. Madrid: International Thomson Editores Spain Paraninfo.

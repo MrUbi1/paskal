@@ -8,4 +8,11 @@
 \description{
 The paskal package assists performance auditors with useful statistical sampling calculations. It includes functions to calculate sample size, sampling error, and confidence intervals when estimating proportions, means, or totals through various sampling plans.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://mrubi1.github.io/paskal/}
+}
+
+}
 \keyword{internal}

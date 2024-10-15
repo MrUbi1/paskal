@@ -11,13 +11,15 @@
 #' @param parameter Type TRUE if you do know the populations sd, type FALSE (default) if it is an estimate.
 #'
 #' @details
-#' The function to calculate the limit of precision if M is unknown is:
-#' \deqn{LP = Z \cdot \sqrt{ N^2 \cdot \frac {\text{sd}^2}{n} \cdot \frac{(N - n)} {N} }}
-#' where 'sd' is parameter 'sd_est', and 'Z' is the quantile of the two-tailed normal distribution function, compatible with the chosen confidence level 'C'.
+#' The function to calculate the confidence interval if M is unknown is:
+#' \deqn{CI = \hat{t} \pm MOE}
+#' where:
+#' \deqn{MOE = Z \cdot \sqrt{ N^2 \cdot \frac {\text{sd}^2}{n} \cdot \frac{(N - n)} {N} }}
+#' \eqn{\hat{t}} is the sample total, 'sd' is parameter 'sd_est', and 'Z' is the quantile of the two-tailed normal distribution function, compatible with the chosen confidence level 'C'.
 #' If 'sd_est' is unknown, the t-student is used instead of the normal distribution.
 #'
 #' Alternatively, if M is known, the function is as follows:
-#' \deqn{LP = Z \cdot \sqrt{ M^2 \cdot \frac {\text{sd}^2}{n} \cdot \frac{(N - n)} {N \cdot m^2} }}
+#' \deqn{MOE = Z \cdot \sqrt{ M^2 \cdot \frac {\text{sd}^2}{n} \cdot \frac{(N - n)} {N \cdot m^2} }}
 #'
 #' @return This function returns the confidence interval of the population total when using a cluster sampling design without replacement, given the sample size.
 #' @export
@@ -65,7 +67,7 @@ ct_cls <- function(C, x_est, n_real, sd_est, m, N = Inf, M = NULL, parameter = F
                sqrt(N^2 * ((N - n_real) / (N * n_real)) * sd_est^2), # unknown M
                sqrt(M^2 * ((N - n_real) / (N * n_real * m^2)) * sd_est^2)) # known M
 
-  LP <- ifelse(parameter == TRUE,
+  MOE <- ifelse(parameter == TRUE,
                qnorm(C + (1 - C) / 2, 0, 1), # qnorm: quantile of the normal distribution
                qt(C + (1 - C) / 2, N) # qt: quantile of the t-student distribution
   ) * sd_t_est
@@ -74,9 +76,9 @@ ct_cls <- function(C, x_est, n_real, sd_est, m, N = Inf, M = NULL, parameter = F
                   x_est * N * m, # unknown M
                   x_est * M) # known M
 
-  p_upper <- round(t_est + LP, 3)
+  p_upper <- round(t_est + MOE, 3)
 
-  p_lower <- round(t_est - LP, 3)
+  p_lower <- round(t_est - MOE, 3)
 
   inference <- paste0("The population mean is between ", p_lower, " and ", p_upper, " with ", C * 100, "% confidence.")
 
@@ -84,6 +86,6 @@ ct_cls <- function(C, x_est, n_real, sd_est, m, N = Inf, M = NULL, parameter = F
     inference <- paste0(inference, " Note that n_real < 20 and the estimated variance may not be unbiased. Consider increasing the sample size.")
   }
 
-  return(list(t_est = t_est, margin_of_error = LP, inference = inference))
+  return(list(t_est = t_est, margin_of_error = MOE, inference = inference))
 
 }

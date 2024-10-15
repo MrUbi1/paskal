@@ -11,9 +11,11 @@
 #' @export
 #'
 #' @details
-#' The function to calculate the limit of precision is:
-#' \deqn{LP = Z \cdot \sqrt{ \sum_{i=1}^{s} N_i^2  \cdot \frac{\text{sd}_i^2}{n_i} \cdot \frac{(N_i - n_i)}{N_i}  }}
-#' where 'sd' is parameter 'sd_est', and 'Z' is the quantile of the two-tailed normal distribution function, compatible with the chosen confidence level 'C'.
+#' The function to calculate the confidence interval is:
+#' \deqn{CI = \hat{t} \pm MOE}
+#' where:
+#' \deqn{MOE = Z \cdot \sqrt{ \sum_{i=1}^{s} N_i^2  \cdot \frac{\text{sd}_i^2}{n_i} \cdot \frac{(N_i - n_i)}{N_i}  }}
+#' \eqn{\hat{t}} is the sample total, 'sd' is parameter 'sd_est', and 'Z' is the quantile of the two-tailed normal distribution function, compatible with the chosen confidence level 'C'.
 #' If 'sd_est' is unknown, the t-student is used instead of the normal distribution.
 #'
 #' @examples ct_sts(C = 0.95, n_real = c(100, 150, 200), x_est = c(0.3, 0.5, 0.7), sd_est = c(0.5, 0.6, 0.4), N = c(200, 250, 300))
@@ -52,17 +54,17 @@ ct_sts <- function(C, n_real, x_est, sd_est, N, parameter = FALSE) {
 
   sd_t_est <- sqrt(sum(N^2 * (N - n_real) / N * sd_est^2 / n_real))
 
-  LP <- ifelse(parameter == TRUE,
+  MOE <- ifelse(parameter == TRUE,
                qnorm(C + (1 - C) / 2, 0, 1), # qnorm: quantile of the normal distribution
                qt(C + (1 - C) / 2, sum(n_real)) # qt: quantile of the t-student distribution
                ) * sd_t_est
 
-  p_lower <- round(t_est - LP, 3)
+  p_lower <- round(t_est - MOE, 3)
 
-  p_upper <- round(t_est + LP, 3)
+  p_upper <- round(t_est + MOE, 3)
 
   inference <- paste0("The population total is between ", p_lower, " and ", p_upper, " with ", C * 100, "% confidence.")
 
-  return(list(global_t_est = t_est, margin_of_error = LP, inference = inference))
+  return(list(global_t_est = t_est, margin_of_error = MOE, inference = inference))
 
 }

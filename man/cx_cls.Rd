@@ -28,9 +28,11 @@ This function returns the confidence interval of the population mean when using 
 Confidence interval of the mean under a cluster sampling design
 }
 \details{
-The function to calculate the limit of precision is:
-\deqn{LP = Z \cdot \sqrt{ \frac{\text{sd}^2}{n} \cdot \frac{(N - n)}{N \cdot m^2} }}
-where 'sd' is parameter 'sd_est', and 'Z' is the quantile of the two-tailed normal distribution function, compatible with the chosen confidence level 'C'.
+The function to calculate the confidence interval is:
+\deqn{CI = \hat{x} \pm MOE}
+where:
+\deqn{MOE = Z \cdot \sqrt{ \frac{\text{sd}^2}{n} \cdot \frac{(N - n)}{N \cdot m^2} }},
+\eqn{\hat{x}} is the sample mean, 'sd' is parameter 'sd_est', and 'Z' is the quantile of the two-tailed normal distribution function, compatible with the chosen confidence level 'C'.
 If 'sd_est' is unknown, the t-student is used instead of the normal distribution.
 }
 \examples{

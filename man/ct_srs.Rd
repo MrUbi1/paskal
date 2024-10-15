@@ -26,9 +26,11 @@ The function returns the confidence interval of the population total.
 Confidence interval of the total under a simple random sampling design
 }
 \details{
-The function to calculate the limit of precision is:
-\deqn{LP = Z \cdot \sqrt{ \frac{\text{sd}^2}{n} \cdot \frac{(N - n)} {N} \cdot N^2}}
-where 'sd' is parameter 'sd_est', and 'Z' is the quantile of the two-tailed normal distribution function, compatible with the chosen confidence level 'C'.
+The function to calculate the confidence interval is:
+\deqn{CI = \hat{t} \pm MOE}
+where:
+\deqn{MOE = Z \cdot \sqrt{ \frac{\text{sd}^2}{n} \cdot \frac{(N - n)} {N} \cdot N^2}}
+\eqn{\hat{t}} is the sample total, 'sd' is parameter 'sd_est', and 'Z' is the quantile of the two-tailed normal distribution function, compatible with the chosen confidence level 'C'.
 If 'sd_est' is unknown, the t-student is used instead of the normal distribution.
 }
 \examples{
